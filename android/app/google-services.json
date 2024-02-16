@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "274492504560",
+    "project_id": "schallange",
+    "storage_bucket": "schallange.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:274492504560:android:b51bc2889c751760720535",
+        "android_client_info": {
+          "package_name": "com.example.schallange"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAKCezTrtt5jEzUpr5QbcCabxIpdWHdyUA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
