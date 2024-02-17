@@ -34,13 +34,17 @@ class _signUpPageState extends State<signUpPage> {
   TextEditingController ageController = TextEditingController();
   TextEditingController reasonController = TextEditingController();
 
-  Future addUserDetails(String fullname, String reason, int age) async {
-    await FirebaseFirestore.instance.collection("users").add({
-      'fullname': fullname,
-      'reason': reason,
-      'age': age,
-    });
-  }
+  Future<void> addUserDetails(String fullname, String reason, int age) async {
+  // Get the current user's ID
+  String userId = FirebaseAuth.instance.currentUser!.uid;
+  
+  // Store user information in Firestore
+  await FirebaseFirestore.instance.collection("users").doc(userId).set({
+    'fullname': fullname,
+    'reason': reason,
+    'age': age,
+  });
+}
 
   @override
   Widget build(BuildContext context) {
@@ -172,7 +176,7 @@ class _signUpPageState extends State<signUpPage> {
                                                     .pushReplacement(
                                                   MaterialPageRoute(
                                                     builder: (context) =>
-                                                        MainPage(),
+                                                        const MainPage(),
                                                   ),
                                                 );
                                               } catch (e) {

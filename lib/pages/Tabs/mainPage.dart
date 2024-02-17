@@ -18,15 +18,6 @@ class MainPage extends StatefulWidget {
 
 class _MainPageState extends State<MainPage> {
   int _currentIndex = 0;
-  late User? _user;
-  late String _selectedItem;
-
-  @override
-  void initState() {
-    super.initState();
-    _user = FirebaseAuth.instance.currentUser;
-    _selectedItem = widget.selectedItem ?? '';
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -51,7 +42,7 @@ class _MainPageState extends State<MainPage> {
             _currentIndex = newIndex;
           });
         },
-        initialActiveIndex: _currentIndex, // Başlangıçta seçilen endeksi belirt
+        initialActiveIndex: _currentIndex, 
       ),
     );
   }
@@ -59,7 +50,7 @@ class _MainPageState extends State<MainPage> {
   Widget _buildBody() {
     switch (_currentIndex) {
       case 0:
-        return const TimeCounterPage();
+        return  TimeCounterPage();
       case 1:
         return const ActivityPage();
       case 2:

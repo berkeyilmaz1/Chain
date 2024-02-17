@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:schallange/constants/constants.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class DailyClicker extends StatefulWidget {
@@ -45,19 +46,19 @@ class _DailyClickerState extends State<DailyClicker> {
   void _handleButtonClick() {
     if (_canClickToday()) {
       _incrementClick();
-      _prefs.setInt('lastClickTimestamp', DateTime.now().millisecondsSinceEpoch);
+      _prefs.setInt(
+          'lastClickTimestamp', DateTime.now().millisecondsSinceEpoch);
       // Perform any action you want after a successful click here
     } else {
       // Optionally, you can show a message indicating the user already clicked today
       showDialog(
         context: context,
         builder: (context) => AlertDialog(
-          title: Text('Already Clicked Today'),
-          content: Text('You have already clicked today.'),
+          title: const Text('Bugün zaten tıkladınız.'),
           actions: [
             ElevatedButton(
               onPressed: () => Navigator.of(context).pop(),
-              child: Text('OK'),
+              child: const Text('Tamam'),
             ),
           ],
         ),
@@ -67,26 +68,11 @@ class _DailyClickerState extends State<DailyClicker> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Daily Clicker'),
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text(
-              'Click Count: $_clickCount',
-              style: TextStyle(fontSize: 24),
-            ),
-            SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: _handleButtonClick,
-              child: Text('Click'),
-            ),
-          ],
-        ),
-      ),
+    return ElevatedButton(
+      style: const ButtonStyle(elevation: MaterialStatePropertyAll(20),
+      backgroundColor: const MaterialStatePropertyAll(Colors.white)),
+      onPressed: _handleButtonClick,
+      child: const Text('Tıkla',style: kButtonTextStyle,),
     );
   }
 }

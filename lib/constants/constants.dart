@@ -6,7 +6,8 @@ const padding8 = EdgeInsets.all(8.0);
 const radius = BorderRadius.vertical(top: Radius.circular(36));
 
 const kButtonTextStyle = TextStyle(
-    color: Colors.black, letterSpacing: 0.5, fontWeight: FontWeight.w500);
+    color: Colors.black, letterSpacing: 0.5, fontWeight: FontWeight.w700
+    );
 const kTextStyle = 
 
 TextStyle(color: Colors.black, fontWeight: FontWeight.w600);

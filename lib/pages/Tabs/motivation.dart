@@ -1,8 +1,9 @@
-// ignore_for_file: prefer_const_constructors
-
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:schallange/components/mySizedBox.dart';
+import 'package:schallange/components/ratingBar.dart';
+import 'package:schallange/constants/constants.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class RandomMessagePage extends StatefulWidget {
@@ -70,10 +71,11 @@ class _RandomMessagePageState extends State<RandomMessagePage> {
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        title: Text('Günlük Motivasyon'),
+        title: const Text('Günlük Motivasyon'),
       ),
       body: Column(
         children: [
+          const MySizedBox(height: 10, widht: 0),
           Padding(
             padding: const EdgeInsets.all(16.0),
             child: Stack(
@@ -89,7 +91,6 @@ class _RandomMessagePageState extends State<RandomMessagePage> {
                           fit: BoxFit.fitHeight),
                       borderRadius: BorderRadius.all(Radius.circular(24))),
                 ),
-
                 Positioned(
                   left: 0,
                   right: 0,
@@ -99,7 +100,7 @@ class _RandomMessagePageState extends State<RandomMessagePage> {
                       padding: const EdgeInsets.all(8.0),
                       child: Text(
                         selectedMessage,
-                        style: TextStyle(
+                        style: const TextStyle(
                           color: Colors.white,
                           fontSize: 20,
                         ),
@@ -111,6 +112,39 @@ class _RandomMessagePageState extends State<RandomMessagePage> {
               ],
             ),
           ),
+          const MySizedBox(height: 10, widht: 0),
+          const Divider(),
+          const MySizedBox(height: 10, widht: 0),
+          SizedBox(
+              width: width,
+              child: const Center(
+                  child: Text('Bugün Kendini Nasıl Hissediyorsun ?',
+                      maxLines: 1,
+                      style: TextStyle(
+                          fontSize: 22, fontWeight: FontWeight.bold)))),
+          const MySizedBox(height: 10, widht: 0),
+          const MyRatingBar(),
+          Padding(
+      padding: const EdgeInsets.all(16.0),
+      child: Container(
+        decoration: const BoxDecoration(
+            color: ufo_green,
+            borderRadius: BorderRadius.all(Radius.circular(12))),
+
+        child:  ListTile(
+          title: const Text(
+            "Kendime Verdiğim Söz",
+            style: TextStyle(
+                color: Colors.white, fontSize: 24, fontWeight: FontWeight.w600,),
+          ),
+          subtitle: Text("buraya girilecek...",
+              style: TextStyle(
+                  color: Colors.grey.shade200,
+                  fontSize: 20,
+                  fontWeight: FontWeight.w500)),
+        ),
+      ),
+    )
         ],
       ),
     );

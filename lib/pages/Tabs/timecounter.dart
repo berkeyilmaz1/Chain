@@ -80,7 +80,7 @@ class _TimeCounterPageState extends State<TimeCounterPage>
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        title: Text(' Bağımlılığı'),
+        title: Text('İlerleyişim'),
       ),
       body: Column(
         children: <Widget>[
@@ -138,6 +138,7 @@ class _TimeCounterPageState extends State<TimeCounterPage>
               style: kButtonTextStyle,
             ),
           ),
+          
         ],
       ),
     );
