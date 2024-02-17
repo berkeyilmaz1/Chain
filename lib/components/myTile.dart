@@ -2,11 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:schallange/components/mySizedBox.dart';
 import 'package:schallange/constants/constants.dart';
 
-class CostumTile extends StatelessWidget {
-  const CostumTile({
+class CustomTile extends StatelessWidget {
+  const CustomTile({
     super.key,
     required this.name,
     required this.obscureText,
+     this.controllerName,
     this.validator,
     this.onSaved,
   });
@@ -14,6 +15,7 @@ class CostumTile extends StatelessWidget {
   final bool obscureText;
   final String? Function(String?)? validator;
   final void Function(String?)? onSaved;
+  final TextEditingController? controllerName;
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -31,6 +33,7 @@ class CostumTile extends StatelessWidget {
         ),
         const MySizedBox(height: 2, widht: 0),
         TextFormField(
+          controller: controllerName,
           onSaved: onSaved,
           validator: validator,
           decoration: InputDecoration(

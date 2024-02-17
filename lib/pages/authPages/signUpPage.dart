@@ -1,9 +1,11 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:schallange/components/myButton.dart';
 import 'package:schallange/components/mySizedBox.dart';
 import 'package:schallange/components/myTile.dart';
 import 'package:schallange/constants/constants.dart';
+import 'package:schallange/pages/Tabs/mainPage.dart';
 
 // ignore: camel_case_types
 class signUpPage extends StatefulWidget {
@@ -28,15 +30,26 @@ class _signUpPageState extends State<signUpPage> {
     'Fast-Food',
   ];
   String? selectedItem = 'Sigara';
+  TextEditingController fullNameController = TextEditingController();
+  TextEditingController ageController = TextEditingController();
+  TextEditingController reasonController = TextEditingController();
+
+  Future addUserDetails(String fullname, String reason, int age) async {
+    await FirebaseFirestore.instance.collection("users").add({
+      'fullname': fullname,
+      'reason': reason,
+      'age': age,
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
-
     String titleName2 = "Hadi Başlayalım";
     String warning = "Bilgileri Eksizsiz Doldurunuz!";
-
     String emailTitle = "E-mail";
     String passwordTitle = "Şifre";
+
     return Scaffold(
         resizeToAvoidBottomInset: false,
         backgroundColor: ufo_green,
@@ -60,7 +73,21 @@ class _signUpPageState extends State<signUpPage> {
                           padding: kPadding24,
                           child: Column(
                             children: [
-                              CostumTile(
+                              CustomTile(
+                                  controllerName: fullNameController,
+                                  name: "İsim-Soyisim",
+                                  obscureText: false),
+                              CustomTile(
+                                  controllerName: ageController,
+                                  name: "Yaş",
+                                  obscureText: false),
+                              const MySizedBox(height: 15, widht: 0),
+                              CustomTile(
+                                  controllerName: reasonController,
+                                  name: "Neden Yapıyorum?",
+                                  obscureText: false),
+                              const MySizedBox(height: 15, widht: 0),
+                              CustomTile(
                                 validator: (value) {
                                   if (value!.isEmpty) {
                                     return warning;
@@ -73,8 +100,8 @@ class _signUpPageState extends State<signUpPage> {
                                 name: emailTitle,
                                 obscureText: false,
                               ),
-                              const MySizedBox(height: 30, widht: 0),
-                              CostumTile(
+                              const MySizedBox(height: 15, widht: 0),
+                              CustomTile(
                                 validator: (value) {
                                   if (value!.isEmpty) {
                                     return warning;
@@ -87,20 +114,14 @@ class _signUpPageState extends State<signUpPage> {
                                 name: passwordTitle,
                                 obscureText: true,
                               ),
-                              const MySizedBox(height: 30, widht: 0),
-                              const CostumTile(
-                                name: "Neden Yapıyorum",
-                                obscureText: false,
-                              ),
-                              const MySizedBox(height: 30, widht: 0),
+                              const MySizedBox(height: 15, widht: 0),
                               SizedBox(
                                 width: width,
                                 child: Row(
                                   mainAxisAlignment: MainAxisAlignment.start,
                                   children: [
                                     SizedBox(
-                                      width: width * 0.60,
-                                      height: 50,
+                                      width: 200,
                                       child: Text(
                                         "Hangi Bağımlılıktan Kurtulmak İstiyorsun",
                                         style: TextStyle(
@@ -109,9 +130,7 @@ class _signUpPageState extends State<signUpPage> {
                                         ),
                                       ),
                                     ),
-                                    const MySizedBox(height: 0, widht: 5),
                                     mydropDownButton(),
-                                    const MySizedBox(height: 0, widht: 5),
                                   ],
                                 ),
                               ),
@@ -122,19 +141,26 @@ class _signUpPageState extends State<signUpPage> {
                                   SizedBox(
                                       height: 40,
                                       child: Mybutton(
-                                          // Inside the onPressed of Mybutton widget in signUpPage
                                           onPressed: () async {
                                             if (formkey.currentState!
                                                 .validate()) {
                                               formkey.currentState!.save();
                                               try {
+                                                // ignore: unused_local_variable
                                                 var userResult = await firebaseAuth
                                                     .createUserWithEmailAndPassword(
                                                   email: email,
                                                   password: password,
                                                 );
-
+                                                addUserDetails(
+                                                    fullNameController.text
+                                                        .trim(),
+                                                    reasonController.text
+                                                        .trim(),
+                                                    int.parse(ageController.text
+                                                        .trim()));
                                                 formkey.currentState!.reset();
+                                                // ignore: use_build_context_synchronously
                                                 ScaffoldMessenger.of(context)
                                                     .showSnackBar(
                                                         const SnackBar(
@@ -142,10 +168,13 @@ class _signUpPageState extends State<signUpPage> {
                                                       "Kayıt Olundu. Ana Sayfaya Yönlendiriliyorsunuz."),
                                                 ));
 
-                                                // Navigate to the main page after successful registration
                                                 Navigator.of(context)
-                                                    .pushReplacementNamed(
-                                                        '/mainpage');
+                                                    .pushReplacement(
+                                                  MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        MainPage(),
+                                                  ),
+                                                );
                                               } catch (e) {
                                                 print(e.toString());
                                               }

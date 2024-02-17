@@ -7,7 +7,9 @@ const radius = BorderRadius.vertical(top: Radius.circular(36));
 
 const kButtonTextStyle = TextStyle(
     color: Colors.black, letterSpacing: 0.5, fontWeight: FontWeight.w500);
-const kTextStyle = TextStyle(color: Colors.black, fontWeight: FontWeight.w600);
+const kTextStyle = 
+
+TextStyle(color: Colors.black, fontWeight: FontWeight.w600);
 const kHeaderStyle =
     TextStyle(color: Colors.black, fontWeight: FontWeight.w700, fontSize: 36);
 const kWelcomeTextStyle =

@@ -1,12 +1,16 @@
+import 'package:convex_bottom_bar/convex_bottom_bar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:schallange/constants/constants.dart';
+import 'package:schallange/pages/Tabs/activityPage.dart';
 import 'package:schallange/pages/Tabs/motivation.dart';
 import 'package:schallange/pages/Tabs/profile.dart';
 import 'package:schallange/pages/Tabs/timecounter.dart';
-import 'package:schallange/constants/constants.dart';
 
 class MainPage extends StatefulWidget {
-  const MainPage({Key? key});
+  final String? selectedItem;
+
+  const MainPage({super.key, this.selectedItem});
 
   @override
   State<MainPage> createState() => _MainPageState();
@@ -15,11 +19,13 @@ class MainPage extends StatefulWidget {
 class _MainPageState extends State<MainPage> {
   int _currentIndex = 0;
   late User? _user;
+  late String _selectedItem;
 
   @override
   void initState() {
     super.initState();
     _user = FirebaseAuth.instance.currentUser;
+    _selectedItem = widget.selectedItem ?? '';
   }
 
   @override
@@ -27,33 +33,25 @@ class _MainPageState extends State<MainPage> {
     String progessLabel = "İlerleme";
     String motivationLabel = "Motivasyon";
     String profileLabel = "Profil";
+    String activityLabel = "Aktivitelerim";
     return Scaffold(
       body: _buildBody(),
-      bottomNavigationBar: BottomNavigationBar(
+      bottomNavigationBar: ConvexAppBar(
         backgroundColor: ufo_green,
-        elevation: 2,
-        selectedIconTheme: const IconThemeData(color: Colors.white),
-        selectedLabelStyle: const TextStyle(color: Colors.white),
-        currentIndex: _currentIndex,
+        color: Colors.white,
+        items: [
+          TabItem(
+              icon: Icons.align_horizontal_left_rounded, title: progessLabel),
+          TabItem(icon: Icons.local_activity_rounded, title: activityLabel),
+          TabItem(icon: Icons.star_rounded, title: motivationLabel),
+          TabItem(icon: Icons.person, title: profileLabel),
+        ],
         onTap: (int newIndex) {
           setState(() {
             _currentIndex = newIndex;
           });
         },
-        items: [
-          BottomNavigationBarItem(
-            label: progessLabel,
-            icon: const Icon(Icons.align_horizontal_left_rounded),
-          ),
-          BottomNavigationBarItem(
-            label: motivationLabel,
-            icon: const Icon(Icons.star_rounded),
-          ),
-          BottomNavigationBarItem(
-            label: profileLabel,
-            icon: const Icon(Icons.person),
-          ),
-        ],
+        initialActiveIndex: _currentIndex, // Başlangıçta seçilen endeksi belirt
       ),
     );
   }
@@ -61,15 +59,13 @@ class _MainPageState extends State<MainPage> {
   Widget _buildBody() {
     switch (_currentIndex) {
       case 0:
-        return Container(
-          width: MediaQuery.of(context).size.width,
-          height: MediaQuery.of(context).size.height,
-          child: const TimeCounterPage(),
-        );
+        return const TimeCounterPage();
       case 1:
-        return RandomMessagePage();
+        return const ActivityPage();
       case 2:
-        return _user != null ? ProfilePage(user: _user!) : Container();
+        return const RandomMessagePage();
+      case 3:
+        return ProfilePage();
       default:
         return Container();
     }

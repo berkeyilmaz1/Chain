@@ -5,7 +5,7 @@ import 'package:schallange/pages/Tabs/mainPage.dart';
 import 'package:schallange/pages/authPages/signUpPage.dart';
 import 'package:schallange/pages/authPages/welcomePages.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:schallange/pages/dailyclick.dart';
+
 import 'firebase_options.dart';
 
 void main() async {
@@ -28,12 +28,13 @@ class MyApp extends StatelessWidget {
       title: 'Sol-Chal24',
       debugShowCheckedModeBanner: false,
       theme: themeData(),
-      home:  DailyClicker(),
+      home:  const WelcomePage(),
     );
   }
 
   ThemeData themeData() => ThemeData(
           appBarTheme: const AppBarTheme(
+            titleTextStyle: TextStyle(color:Colors.white,fontSize:28,fontWeight: FontWeight.w500,letterSpacing: 2),
         backgroundColor: ufo_green,
         elevation: 2,
         titleSpacing: 6,

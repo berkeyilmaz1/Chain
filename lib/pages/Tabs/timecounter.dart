@@ -1,6 +1,8 @@
 import 'dart:async';
 import 'dart:math';
+
 import 'package:flutter/material.dart';
+import 'package:schallange/components/mySizedBox.dart';
 import 'package:schallange/constants/constants.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -8,6 +10,7 @@ class TimeCounterPage extends StatefulWidget {
   const TimeCounterPage({super.key});
 
   @override
+  // ignore: library_private_types_in_public_api
   _TimeCounterPageState createState() => _TimeCounterPageState();
 }
 
@@ -23,13 +26,13 @@ class _TimeCounterPageState extends State<TimeCounterPage>
   void initState() {
     super.initState();
     _initPrefs();
-    WidgetsBinding.instance?.addObserver(this);
+    WidgetsBinding.instance.addObserver(this);
   }
 
   @override
   void dispose() {
     timer?.cancel();
-    WidgetsBinding.instance?.removeObserver(this);
+    WidgetsBinding.instance.removeObserver(this);
     super.dispose();
   }
 
@@ -76,62 +79,66 @@ class _TimeCounterPageState extends State<TimeCounterPage>
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('İlerleyiş'),
+        automaticallyImplyLeading: false,
+        title: Text(' Bağımlılığı'),
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            SizedBox(
-              width: 200,
-              height: 200,
-              child: CustomPaint(
-                painter: TimerPainter(
-                  timeElapsed: timeElapsed,
-                  backgroundColor: Colors.grey[300]!,
-                  color: ufo_green,
-                  borderWidth: borderWidth,
-                ),
-                child: Center(
-                  child: Text(
-                    '${timeElapsed.inHours}:${(timeElapsed.inMinutes % 60).toString().padLeft(2, '0')}:${(timeElapsed.inSeconds % 60).toString().padLeft(2, '0')}',
-                    style: const TextStyle(fontSize: 20.0),
+      body: Column(
+        children: <Widget>[
+          const MySizedBox(height: 40, widht: 0),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              SizedBox(
+                width: 200,
+                height: 200,
+                child: CustomPaint(
+                  painter: TimerPainter(
+                    timeElapsed: timeElapsed,
+                    backgroundColor: Colors.grey[300]!,
+                    color: ufo_green,
+                    borderWidth: borderWidth,
+                  ),
+                  child: Center(
+                    child: Text(
+                      '${timeElapsed.inHours}:${(timeElapsed.inMinutes % 60).toString().padLeft(2, '0')}:${(timeElapsed.inSeconds % 60).toString().padLeft(2, '0')}',
+                      style: const TextStyle(fontSize: 20.0),
+                    ),
                   ),
                 ),
               ),
+            ],
+          ),
+          const SizedBox(height: 20.0),
+          ElevatedButton(
+            onPressed: () {
+              showDatePicker(
+                context: context,
+                initialDate: selectedDate,
+                firstDate: DateTime(2000),
+                lastDate: DateTime.now(),
+              ).then((value) {
+                if (value != null) {
+                  setState(() {
+                    selectedDate = value;
+                    _saveData(); // Save when date changes
+                  });
+                }
+              });
+            },
+            child: const Text(
+              'Başlama Tarihini Seçiniz',
+              style: kButtonTextStyle,
             ),
-            const SizedBox(height: 20.0),
-            ElevatedButton(
-              onPressed: () {
-                showDatePicker(
-                  context: context,
-                  initialDate: selectedDate,
-                  firstDate: DateTime(2000),
-                  lastDate: DateTime.now(),
-                ).then((value) {
-                  if (value != null) {
-                    setState(() {
-                      selectedDate = value;
-                      _saveData(); // Save when date changes
-                    });
-                  }
-                });
-              },
-              child: const Text(
-                'Başlama Tarihini Seçiniz',
-                style: kButtonTextStyle,
-              ),
+          ),
+          const SizedBox(height: 20.0),
+          ElevatedButton(
+            onPressed: resetTimer,
+            child: const Text(
+              'Sayacı Sıfırla',
+              style: kButtonTextStyle,
             ),
-            const SizedBox(height: 20.0),
-            ElevatedButton(
-              onPressed: resetTimer,
-              child: const Text(
-                'Sayacı Sıfırla',
-                style: kButtonTextStyle,
-              ),
-            ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

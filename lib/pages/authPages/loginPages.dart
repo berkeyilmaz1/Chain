@@ -14,13 +14,13 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+  final formkey = GlobalKey<FormState>();
+  final firebaseAuth = FirebaseAuth.instance;
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
     late String email;
     late String password;
-    final formkey = GlobalKey<FormState>();
-    final firebaseAuth = FirebaseAuth.instance;
 
     return Scaffold(
       resizeToAvoidBottomInset: false,
@@ -45,7 +45,7 @@ class _LoginPageState extends State<LoginPage> {
                         child: Column(
                           children: [
                             const MySizedBox(height: 30, widht: 0),
-                            CostumTile(
+                            CustomTile(
                                 validator: (value) {
                                   if (value!.isEmpty) {
                                     return "Bilgileri Eksizsiz Doldurunuz!";
@@ -58,7 +58,7 @@ class _LoginPageState extends State<LoginPage> {
                                 name: "E-mail",
                                 obscureText: false),
                             const MySizedBox(height: 30, widht: 0),
-                            CostumTile(
+                            CustomTile(
                                 validator: (value) {
                                   if (value!.isEmpty) {
                                     return "Bilgileri Eksizsiz Doldurunuz!";

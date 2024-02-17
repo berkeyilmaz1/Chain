@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'dart:math';
 
 import 'package:flutter/material.dart';
@@ -7,21 +9,22 @@ class RandomMessagePage extends StatefulWidget {
   const RandomMessagePage({super.key});
 
   @override
+  // ignore: library_private_types_in_public_api
   _RandomMessagePageState createState() => _RandomMessagePageState();
 }
 
 class _RandomMessagePageState extends State<RandomMessagePage> {
   List<String> messages = [
-    "Güçlü bir başlangıç, başarılı bir sonuç getirir.",
-    "Hayallerinize giden yolda engeller sadece duraklamanızı bekleyen araçlardır.",
-    "Küçük adımlar, büyük başarılar getirir.",
-    "Korkularınızı yenin, sınırlarınızı zorlayın, hayallerinize doğru ilerleyin.",
-    "Başarınızı belirleyen, düşüncelerinizdir. Pozitif düşünün, başarıya giden yol açılacaktır.",
-    "Pes etmek, zaferinizi başkasına teslim etmektir.",
-    "Her gün küçük bir ilerleme, büyük bir başarı getirir.",
-    "Zorluklar, güçlü insanların doğduğu yerdir."
-    "Düşmekten korkma, yeniden kalkmayı öğren.",
-    "Yarının başarısını bugünün kararları belirler.",
+    "İmkansızı başarabilirsin!",
+    "Yarın daha iyi olacak.",
+    "Her adım ileriye doğru.",
+    "Hayallerine doğru ilerle yavaşça.",
+    "Hiçbir şey seni durduramaz.",
+    "Güçlü kal, mücadele et!",
+    "Pes etme, zafer senin olacak.",
+    "Hayallerin gerçek olacak, inan!",
+    "Her gün bir adım daha ileri.",
+    "Sınırlarını zorla, başarı seninle.",
   ];
 
   String selectedMessage = '';
@@ -63,35 +66,52 @@ class _RandomMessagePageState extends State<RandomMessagePage> {
 
   @override
   Widget build(BuildContext context) {
-double width = MediaQuery.of(context).size.width;
-double height = MediaQuery.of(context).size.height;
-
-        
+    double width = MediaQuery.of(context).size.width;
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Günlük Motivasyon'),
+        automaticallyImplyLeading: false,
+        title: Text('Günlük Motivasyon'),
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Container(
-                
-                width:width ,
-                height: height/2,
-                child: Center(
-                  child: Text(
-                    selectedMessage,
-                    style: const TextStyle(fontSize: 20),
-                    textAlign: TextAlign.center,
+      body: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Stack(
+              children: [
+                Container(
+                  height: 250,
+                  width: width,
+                  decoration: const BoxDecoration(
+                      image: DecorationImage(
+                          image: ExactAssetImage(
+                            "images/rockss.jpg",
+                          ),
+                          fit: BoxFit.fitHeight),
+                      borderRadius: BorderRadius.all(Radius.circular(24))),
+                ),
+
+                Positioned(
+                  left: 0,
+                  right: 0,
+                  top: 100,
+                  child: Center(
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text(
+                        selectedMessage,
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 20,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
                   ),
                 ),
-              ),
+              ],
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
