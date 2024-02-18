@@ -1,10 +1,11 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:schallange/components/newDailyclick.dart';
 import 'package:schallange/constants/constants.dart';
-import 'package:schallange/pages/authPages/loginPages.dart';
 import 'package:schallange/pages/Tabs/mainPage.dart';
+import 'package:schallange/pages/authPages/loginPages.dart';
 import 'package:schallange/pages/authPages/signUpPage.dart';
 import 'package:schallange/pages/authPages/welcomePages.dart';
-import 'package:firebase_core/firebase_core.dart';
 
 import 'firebase_options.dart';
 
@@ -28,13 +29,17 @@ class MyApp extends StatelessWidget {
       title: 'Sol-Chal24',
       debugShowCheckedModeBanner: false,
       theme: themeData(),
-      home:  const WelcomePage(),
+      home: newDailyClicker(),
     );
   }
 
   ThemeData themeData() => ThemeData(
           appBarTheme: const AppBarTheme(
-            titleTextStyle: TextStyle(color:Colors.white,fontSize:28,fontWeight: FontWeight.w500,letterSpacing: 2),
+        titleTextStyle: TextStyle(
+            color: Colors.white,
+            fontSize: 28,
+            fontWeight: FontWeight.w500,
+            letterSpacing: 2),
         backgroundColor: ufo_green,
         elevation: 2,
         titleSpacing: 6,

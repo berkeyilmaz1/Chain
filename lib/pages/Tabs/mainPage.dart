@@ -1,5 +1,5 @@
+// ignore: file_names
 import 'package:convex_bottom_bar/convex_bottom_bar.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:schallange/constants/constants.dart';
 import 'package:schallange/pages/Tabs/activityPage.dart';
@@ -50,7 +50,7 @@ class _MainPageState extends State<MainPage> {
   Widget _buildBody() {
     switch (_currentIndex) {
       case 0:
-        return  TimeCounterPage();
+        return  const TimeCounterPage();
       case 1:
         return const ActivityPage();
       case 2:

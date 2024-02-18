@@ -2,7 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:schallange/components/myButton.dart';
 import 'package:schallange/components/mySizedBox.dart';
-import 'package:schallange/components/myTile.dart';
+import 'package:schallange/components/myTextField.dart';
 import 'package:schallange/constants/constants.dart';
 import 'package:schallange/pages/authPages/signUpPage.dart';
 
@@ -45,7 +45,7 @@ class _LoginPageState extends State<LoginPage> {
                         child: Column(
                           children: [
                             const MySizedBox(height: 30, widht: 0),
-                            CustomTile(
+                            CustomTextField(
                                 validator: (value) {
                                   if (value!.isEmpty) {
                                     return "Bilgileri Eksizsiz Doldurunuz!";
@@ -58,7 +58,7 @@ class _LoginPageState extends State<LoginPage> {
                                 name: "E-mail",
                                 obscureText: false),
                             const MySizedBox(height: 30, widht: 0),
-                            CustomTile(
+                            CustomTextField(
                                 validator: (value) {
                                   if (value!.isEmpty) {
                                     return "Bilgileri Eksizsiz Doldurunuz!";

@@ -3,7 +3,10 @@ import 'package:schallange/constants/constants.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class DailyClicker extends StatefulWidget {
+  const DailyClicker({super.key});
+
   @override
+  // ignore: library_private_types_in_public_api
   _DailyClickerState createState() => _DailyClickerState();
 }
 
@@ -70,7 +73,7 @@ class _DailyClickerState extends State<DailyClicker> {
   Widget build(BuildContext context) {
     return ElevatedButton(
       style: const ButtonStyle(elevation: MaterialStatePropertyAll(20),
-      backgroundColor: const MaterialStatePropertyAll(Colors.white)),
+      backgroundColor:  MaterialStatePropertyAll(Colors.white)),
       onPressed: _handleButtonClick,
       child: const Text('Tıkla',style: kButtonTextStyle,),
     );

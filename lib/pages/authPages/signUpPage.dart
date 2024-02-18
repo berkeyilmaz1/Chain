@@ -3,7 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:schallange/components/myButton.dart';
 import 'package:schallange/components/mySizedBox.dart';
-import 'package:schallange/components/myTile.dart';
+import 'package:schallange/components/myTextField.dart';
 import 'package:schallange/constants/constants.dart';
 import 'package:schallange/pages/Tabs/mainPage.dart';
 
@@ -77,21 +77,21 @@ class _signUpPageState extends State<signUpPage> {
                           padding: kPadding24,
                           child: Column(
                             children: [
-                              CustomTile(
+                              CustomTextField(
                                   controllerName: fullNameController,
                                   name: "İsim-Soyisim",
                                   obscureText: false),
-                              CustomTile(
+                              CustomTextField(
                                   controllerName: ageController,
                                   name: "Yaş",
                                   obscureText: false),
                               const MySizedBox(height: 15, widht: 0),
-                              CustomTile(
+                              CustomTextField(
                                   controllerName: reasonController,
                                   name: "Neden Yapıyorum?",
                                   obscureText: false),
                               const MySizedBox(height: 15, widht: 0),
-                              CustomTile(
+                              CustomTextField(
                                 validator: (value) {
                                   if (value!.isEmpty) {
                                     return warning;
@@ -105,7 +105,7 @@ class _signUpPageState extends State<signUpPage> {
                                 obscureText: false,
                               ),
                               const MySizedBox(height: 15, widht: 0),
-                              CustomTile(
+                              CustomTextField(
                                 validator: (value) {
                                   if (value!.isEmpty) {
                                     return warning;

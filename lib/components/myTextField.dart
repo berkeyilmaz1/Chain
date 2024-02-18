@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:schallange/components/mySizedBox.dart';
 import 'package:schallange/constants/constants.dart';
 
-class CustomTile extends StatelessWidget {
-  const CustomTile({
+class CustomTextField extends StatelessWidget {
+  const CustomTextField({
     super.key,
     required this.name,
     required this.obscureText,

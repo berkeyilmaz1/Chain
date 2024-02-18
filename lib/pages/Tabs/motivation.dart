@@ -1,9 +1,11 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:schallange/components/myPostButton.dart';
 import 'package:schallange/components/mySizedBox.dart';
+import 'package:schallange/components/myTextField.dart';
 import 'package:schallange/components/ratingBar.dart';
-import 'package:schallange/constants/constants.dart';
+import 'package:schallange/database/firestore.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class RandomMessagePage extends StatefulWidget {
@@ -15,6 +17,7 @@ class RandomMessagePage extends StatefulWidget {
 }
 
 class _RandomMessagePageState extends State<RandomMessagePage> {
+  final TextEditingController _newPromiseController = TextEditingController();
   List<String> messages = [
     "İmkansızı başarabilirsin!",
     "Yarın daha iyi olacak.",
@@ -27,6 +30,13 @@ class _RandomMessagePageState extends State<RandomMessagePage> {
     "Her gün bir adım daha ileri.",
     "Sınırlarını zorla, başarı seninle.",
   ];
+  //add a promise
+  List<String> items = [];
+  void addItem(String newItem) {
+    setState(() {
+      items.add(newItem);
+    });
+  }
 
   String selectedMessage = '';
   late SharedPreferences prefs;
@@ -65,87 +75,132 @@ class _RandomMessagePageState extends State<RandomMessagePage> {
     return messages[random.nextInt(messages.length)];
   }
 
+  void Function()? onPressed;
+  final FirestoreDatabase database = FirestoreDatabase();
+
+  void postMessage() {
+    if (_newPromiseController.text.isNotEmpty) {
+      String message = _newPromiseController.text;
+      database.addPost(message);
+    }
+    _newPromiseController.clear();
+  }
+
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(
         automaticallyImplyLeading: false,
         title: const Text('Günlük Motivasyon'),
       ),
-      body: Column(
-        children: [
-          const MySizedBox(height: 10, widht: 0),
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Stack(
-              children: [
-                Container(
-                  height: 250,
-                  width: width,
-                  decoration: const BoxDecoration(
-                      image: DecorationImage(
-                          image: ExactAssetImage(
-                            "images/rockss.jpg",
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Stack(
+                children: [
+                  Container(
+                    height: 250,
+                    width: width,
+                    decoration: const BoxDecoration(
+                        image: DecorationImage(
+                            image: ExactAssetImage(
+                              "images/rockss.jpg",
+                            ),
+                            fit: BoxFit.fitHeight),
+                        borderRadius: BorderRadius.all(Radius.circular(24))),
+                  ),
+                  Positioned(
+                    left: 0,
+                    right: 0,
+                    top: 100,
+                    child: Center(
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(
+                          selectedMessage,
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 20,
                           ),
-                          fit: BoxFit.fitHeight),
-                      borderRadius: BorderRadius.all(Radius.circular(24))),
-                ),
-                Positioned(
-                  left: 0,
-                  right: 0,
-                  top: 100,
-                  child: Center(
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Text(
-                        selectedMessage,
-                        style: const TextStyle(
-                          color: Colors.white,
-                          fontSize: 20,
+                          textAlign: TextAlign.center,
                         ),
-                        textAlign: TextAlign.center,
                       ),
                     ),
                   ),
-                ),
+                ],
+              ),
+            ),
+            Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                SizedBox(
+                    width: width,
+                    child: const Center(
+                        child: Text('Bugün Kendini Nasıl Hissediyorsun ?',
+                            maxLines: 1,
+                            style: TextStyle(
+                                fontSize: 22, fontWeight: FontWeight.bold)))),
+                const MySizedBox(height: 20, widht: 0),
+                const MyRatingBar(),
+                const MySizedBox(height: 20, widht: 0)
               ],
             ),
-          ),
-          const MySizedBox(height: 10, widht: 0),
-          const Divider(),
-          const MySizedBox(height: 10, widht: 0),
-          SizedBox(
-              width: width,
-              child: const Center(
-                  child: Text('Bugün Kendini Nasıl Hissediyorsun ?',
-                      maxLines: 1,
-                      style: TextStyle(
-                          fontSize: 22, fontWeight: FontWeight.bold)))),
-          const MySizedBox(height: 10, widht: 0),
-          const MyRatingBar(),
-          Padding(
-      padding: const EdgeInsets.all(16.0),
-      child: Container(
-        decoration: const BoxDecoration(
-            color: ufo_green,
-            borderRadius: BorderRadius.all(Radius.circular(12))),
-
-        child:  ListTile(
-          title: const Text(
-            "Kendime Verdiğim Söz",
-            style: TextStyle(
-                color: Colors.white, fontSize: 24, fontWeight: FontWeight.w600,),
-          ),
-          subtitle: Text("buraya girilecek...",
-              style: TextStyle(
-                  color: Colors.grey.shade200,
-                  fontSize: 20,
-                  fontWeight: FontWeight.w500)),
+            Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Expanded(
+                    child: CustomTextField(
+                        name: "Kendime Verdiğim Söz",
+                        obscureText: false,
+                        controllerName: _newPromiseController),
+                  ),
+                  myPostButton(
+                    onTap: postMessage,
+                  )
+                ],
+              ),
+            ),
+            StreamBuilder(
+              stream: database.getPostsStream(),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const Center(child: CircularProgressIndicator());
+                }
+                final posts = snapshot.data!.docs;
+                if (snapshot.data == null || posts.isEmpty) {
+                  return const Center(
+                    child: Padding(
+                      padding: EdgeInsets.all(8.0),
+                      child: Text('Söz Verilmedi'),
+                    ),
+                  );
+                } else {
+                  return Expanded(
+                    child: ListView.builder(
+                      itemCount: posts.length,
+                      itemBuilder: (context, index) {
+                        final post = posts[index];
+                        String message = post['postMessage'];
+                        String userEmail = post['Useremail'];
+                        String timestamp = post['TimeStamp'];
+                        return ListTile(
+                          title: Text(message),
+                          subtitle: Text(userEmail),
+                        );
+                      },
+                    ),
+                  );
+                }
+              },
+            ),
+          ],
         ),
-      ),
-    )
-        ],
       ),
     );
   }

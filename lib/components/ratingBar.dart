@@ -7,7 +7,7 @@ class MyRatingBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return RatingBar.builder(
-      initialRating: 3,
+      initialRating: 0,
       itemCount: 5,
       itemBuilder: (context, index) {
         switch (index) {
