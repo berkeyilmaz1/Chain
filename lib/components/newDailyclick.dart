@@ -2,17 +2,16 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-// ignore: camel_case_types
-class newDailyClicker extends StatefulWidget {
-  const newDailyClicker({super.key});
+class NewDailyClicker extends StatefulWidget {
+  const NewDailyClicker({super.key});
 
   @override
-  _newDailyClickerState createState() => _newDailyClickerState();
+  _NewDailyClickerState createState() => _NewDailyClickerState();
 }
 
-class _newDailyClickerState extends State<newDailyClicker> {
-  int _counter = 10;
-  bool _buttonEnabled = true;
+class _NewDailyClickerState extends State<NewDailyClicker> {
+  List<int> _counters = [];
+  List<bool> _buttonEnabled = [];
 
   @override
   void initState() {
@@ -23,22 +22,26 @@ class _newDailyClickerState extends State<newDailyClicker> {
   void checkLastButtonClickDate() async {
     final FirebaseFirestore _firestore = FirebaseFirestore.instance;
     final today = DateFormat('yyyy-MM-dd').format(DateTime.now());
-    final documentSnapshot =
-        await _firestore.collection('last_click').doc('last_click_info').get();
-    if (documentSnapshot.exists) {
-      final lastClickDate = documentSnapshot.get('last_click_date');
-      if (lastClickDate == today) {
-        setState(() {
-          _buttonEnabled = false;
-        });
+    for (int i = 0; i < _counters.length; i++) {
+      final documentSnapshot = await _firestore
+          .collection('last_click')
+          .doc('button_$i')
+          .get();
+      if (documentSnapshot.exists) {
+        final lastClickDate = documentSnapshot.get('last_click_date');
+        if (lastClickDate == today) {
+          setState(() {
+            _buttonEnabled[i] = false;
+          });
+        }
       }
     }
   }
 
-  void _incrementCounter() async {
+  void _incrementCounter(int index) async {
     setState(() {
-      _counter += 10;
-      _buttonEnabled = false;
+      _counters[index] += 10;
+      _buttonEnabled[index] = false;
     });
 
     final FirebaseFirestore _firestore = FirebaseFirestore.instance;
@@ -47,12 +50,13 @@ class _newDailyClickerState extends State<newDailyClicker> {
     try {
       await _firestore
           .collection('deger')
-          .doc('butonDegeri')
-          .set({'deger': _counter});
-      await _firestore.collection('last_click').doc('last_click_info').set({
-        'last_click_date': today,
-      });
-      print('Değer Firestore\'a yazıldı: $_counter');
+          .doc('butonDegeri_$index')
+          .set({'deger': _counters[index]});
+      await _firestore
+          .collection('last_click')
+          .doc('button_$index')
+          .set({'last_click_date': today});
+      print('Değer Firestore\'a yazıldı: ${_counters[index]}');
     } catch (e) {
       print('Hata: $e');
     }
@@ -79,21 +83,37 @@ class _newDailyClickerState extends State<newDailyClicker> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Text(
-              'Butona basıldıkça artan değer:',
-            ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headlineMedium,
-            ),
+            for (int i = 0; i < _counters.length; i++)
+              Column(
+                children: [
+                  Text(
+                    'Buton ${i + 1} için değer:',
+                  ),
+                  Text(
+                    '${_counters[i]}',
+                    style: Theme.of(context).textTheme.headline4,
+                  ),
+                ],
+              ),
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _buttonEnabled ? _incrementCounter : alreadyClicked,
-        tooltip: 'Artır',
-        child: Icon(Icons.add),
+      floatingActionButton: Column(
+        mainAxisAlignment: MainAxisAlignment.end,
+        crossAxisAlignment: CrossAxisAlignment.end,
+        children: [
+          for (int i = 0; i < _counters.length; i++)
+            FloatingActionButton(
+              onPressed: _buttonEnabled[i]
+                  ? () => _incrementCounter(i)
+                  : alreadyClicked, 
+              tooltip: 'Artır',
+              child: Icon(Icons.add),
+            ),
+        ],
       ),
     );
   }
 }
+
+

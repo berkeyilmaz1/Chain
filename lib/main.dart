@@ -29,7 +29,7 @@ class MyApp extends StatelessWidget {
       title: 'Sol-Chal24',
       debugShowCheckedModeBanner: false,
       theme: themeData(),
-      home: newDailyClicker(),
+      home: WelcomePage(),
     );
   }
 
