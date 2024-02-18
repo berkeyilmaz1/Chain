@@ -62,7 +62,7 @@ class MyActivityBox extends StatelessWidget {
                   )
                 ],
               ),
-              SizedBox(width: 90, height: 50, child: DailyClicker()),
+              const SizedBox(width: 90, height: 50, child: DailyClicker()),
             ],
           ),
         ),

@@ -146,9 +146,10 @@ class _RandomMessagePageState extends State<RandomMessagePage> {
                                 fontSize: 22, fontWeight: FontWeight.bold)))),
                 const MySizedBox(height: 20, widht: 0),
                 const MyRatingBar(),
-                const MySizedBox(height: 20, widht: 0)
+                const MySizedBox(height: 10, widht: 0)
               ],
             ),
+            const Divider(),
             Padding(
               padding: const EdgeInsets.all(16.0),
               child: Row(

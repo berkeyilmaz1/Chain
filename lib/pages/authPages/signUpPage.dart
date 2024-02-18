@@ -88,7 +88,7 @@ class _signUpPageState extends State<signUpPage> {
                               const MySizedBox(height: 15, widht: 0),
                               CustomTextField(
                                   controllerName: reasonController,
-                                  name: "Neden Yapıyorum?",
+                                  name: "Neden Bırakmak İstiyorum?",
                                   obscureText: false),
                               const MySizedBox(height: 15, widht: 0),
                               CustomTextField(
@@ -171,7 +171,7 @@ class _signUpPageState extends State<signUpPage> {
                                                   content: Text(
                                                       "Kayıt Olundu. Ana Sayfaya Yönlendiriliyorsunuz."),
                                                 ));
-
+          
                                                 Navigator.of(context)
                                                     .pushReplacement(
                                                   MaterialPageRoute(

@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:schallange/components/MyPointBox.dart';
 import 'package:schallange/components/mySizedBox.dart';
 import 'package:schallange/constants/constants.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -21,6 +22,8 @@ class _TimeCounterPageState extends State<TimeCounterPage>
   Timer? timer;
   Duration timeElapsed = const Duration();
   final double borderWidth = 8.0;
+
+  var kazanc = 0;
 
   @override
   void initState() {
@@ -80,11 +83,14 @@ class _TimeCounterPageState extends State<TimeCounterPage>
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        title: Text('İlerleyişim'),
+        title: const Text('İlerleyişim'),
       ),
       body: Column(
         children: <Widget>[
-          const MySizedBox(height: 40, widht: 0),
+          const MySizedBox(height: 20, widht: 0),
+          const Text("Bağımlılıktan Uzak Kalma Sürem ",
+              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
+          const MySizedBox(height: 20, widht: 0),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -110,6 +116,7 @@ class _TimeCounterPageState extends State<TimeCounterPage>
           ),
           const SizedBox(height: 20.0),
           ElevatedButton(
+            style: kButtonStyle,
             onPressed: () {
               showDatePicker(
                 context: context,
@@ -127,18 +134,21 @@ class _TimeCounterPageState extends State<TimeCounterPage>
             },
             child: const Text(
               'Başlama Tarihini Seçiniz',
-              style: kButtonTextStyle,
+              style: kTextStyle,
             ),
           ),
           const SizedBox(height: 20.0),
           ElevatedButton(
+            style: kButtonStyle,
             onPressed: resetTimer,
             child: const Text(
               'Sayacı Sıfırla',
-              style: kButtonTextStyle,
+              style: kTextStyle,
             ),
           ),
-          
+          const Divider(),
+          const MyPointBox(boxTitle: "Toplam Puanınız", puan: 30),
+          const MyPointBox(boxTitle: "Toplam Kazancınız", puan: 30),
         ],
       ),
     );

@@ -3,6 +3,7 @@ import 'package:convex_bottom_bar/convex_bottom_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:schallange/constants/constants.dart';
 import 'package:schallange/pages/Tabs/activityPage.dart';
+import 'package:schallange/pages/Tabs/mapPage.dart';
 import 'package:schallange/pages/Tabs/motivation.dart';
 import 'package:schallange/pages/Tabs/profile.dart';
 import 'package:schallange/pages/Tabs/timecounter.dart';
@@ -24,10 +25,12 @@ class _MainPageState extends State<MainPage> {
     String progessLabel = "İlerleme";
     String motivationLabel = "Motivasyon";
     String profileLabel = "Profil";
-    String activityLabel = "Aktivitelerim";
+    String activityLabel = "Aktiviteler";
+    String mapLabel = "Harita";
     return Scaffold(
       body: _buildBody(),
       bottomNavigationBar: ConvexAppBar(
+       
         backgroundColor: ufo_green,
         color: Colors.white,
         items: [
@@ -35,6 +38,7 @@ class _MainPageState extends State<MainPage> {
               icon: Icons.align_horizontal_left_rounded, title: progessLabel),
           TabItem(icon: Icons.local_activity_rounded, title: activityLabel),
           TabItem(icon: Icons.star_rounded, title: motivationLabel),
+          TabItem(icon: Icons.location_on_rounded, title: mapLabel),
           TabItem(icon: Icons.person, title: profileLabel),
         ],
         onTap: (int newIndex) {
@@ -42,7 +46,7 @@ class _MainPageState extends State<MainPage> {
             _currentIndex = newIndex;
           });
         },
-        initialActiveIndex: _currentIndex, 
+        initialActiveIndex: _currentIndex,
       ),
     );
   }
@@ -50,12 +54,14 @@ class _MainPageState extends State<MainPage> {
   Widget _buildBody() {
     switch (_currentIndex) {
       case 0:
-        return  const TimeCounterPage();
+        return const TimeCounterPage();
       case 1:
         return const ActivityPage();
       case 2:
         return const RandomMessagePage();
       case 3:
+        return const MapSample();
+      case 4:
         return ProfilePage();
       default:
         return Container();
