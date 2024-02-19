@@ -13,7 +13,7 @@ class MyPointBox extends StatelessWidget {
 
     double height = 70;
     return Padding(
-      padding: const EdgeInsets.only(top: 10,left: 16,right: 16,bottom: 8),
+      padding: const EdgeInsets.only(top: 10, left: 16, right: 16, bottom: 8),
       child: SizedBox(
         width: width,
         child: Row(
@@ -25,10 +25,7 @@ class MyPointBox extends StatelessWidget {
               decoration: const BoxDecoration(
                   color: ufo_green,
                   boxShadow: [
-                    BoxShadow(
-                        color: Colors.black45,
-                        blurStyle: BlurStyle.outer,
-                        offset: Offset(1, 2))
+                    BoxShadow(blurRadius: 2,blurStyle: BlurStyle.outer)
                   ],
                   borderRadius: BorderRadius.all(Radius.circular(12))),
               child: Center(
@@ -43,10 +40,7 @@ class MyPointBox extends StatelessWidget {
               width: width * 0.25,
               decoration: const BoxDecoration(
                   boxShadow: [
-                    BoxShadow(
-                        color: Colors.black54,
-                        blurStyle: BlurStyle.outer,
-                        offset: Offset(1, 2))
+                    BoxShadow(blurRadius: 2,blurStyle: BlurStyle.outer)
                   ],
                   color: ufo_green,
                   borderRadius: BorderRadius.all(Radius.circular(12))),

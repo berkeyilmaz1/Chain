@@ -3,7 +3,7 @@ import 'package:schallange/constants/constants.dart';
 
 class myPostButton extends StatelessWidget {
   const myPostButton({super.key, this.onTap});
-  final void Function()? onTap;
+  final  Function()? onTap;
   @override
   Widget build(BuildContext context) {
     return GestureDetector(

@@ -5,7 +5,6 @@ import 'package:schallange/components/myButton.dart';
 import 'package:schallange/components/mySizedBox.dart';
 import 'package:schallange/components/myTextField.dart';
 import 'package:schallange/constants/constants.dart';
-import 'package:schallange/pages/Tabs/mainPage.dart';
 
 // ignore: camel_case_types
 class signUpPage extends StatefulWidget {
@@ -172,13 +171,8 @@ class _signUpPageState extends State<signUpPage> {
                                                       "Kayıt Olundu. Ana Sayfaya Yönlendiriliyorsunuz."),
                                                 ));
           
-                                                Navigator.of(context)
-                                                    .pushReplacement(
-                                                  MaterialPageRoute(
-                                                    builder: (context) =>
-                                                        const MainPage(),
-                                                  ),
-                                                );
+                                                // ignore: use_build_context_synchronously
+                                                Navigator.of(context).pushReplacementNamed('/mainpage');
                                               } catch (e) {
                                                 print(e.toString());
                                               }

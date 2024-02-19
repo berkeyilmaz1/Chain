@@ -174,7 +174,7 @@ class _RandomMessagePageState extends State<RandomMessagePage> {
                   return const Center(child: CircularProgressIndicator());
                 }
                 final posts = snapshot.data!.docs;
-                if (snapshot.data == null || posts.isEmpty) {
+                if (snapshot.data == null) {
                   return const Center(
                     child: Padding(
                       padding: EdgeInsets.all(8.0),
@@ -182,14 +182,20 @@ class _RandomMessagePageState extends State<RandomMessagePage> {
                     ),
                   );
                 } else {
-                  return Expanded(
-                    child: ListView.builder(
+                  return 
+                  SizedBox(
+                    height: 700,
+                    width: 345,
+                    child: 
+                    
+                    
+                    ListView.builder(
+                      shrinkWrap: true,
                       itemCount: posts.length,
                       itemBuilder: (context, index) {
                         final post = posts[index];
                         String message = post['postMessage'];
                         String userEmail = post['Useremail'];
-                        String timestamp = post['TimeStamp'];
                         return ListTile(
                           title: Text(message),
                           subtitle: Text(userEmail),
