@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:schallange/constants/constants.dart';
 
+// ignore: camel_case_types
 class myAlertBox extends StatelessWidget {
   final double rating;
 

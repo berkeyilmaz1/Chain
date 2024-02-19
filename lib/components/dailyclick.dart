@@ -71,7 +71,10 @@ class _DailyClickerState extends State<DailyClicker> {
 
   @override
   Widget build(BuildContext context) {
-    return ElevatedButton(
+    return 
+    
+    ElevatedButton(
+
       style: const ButtonStyle(elevation: MaterialStatePropertyAll(20),
       backgroundColor:  MaterialStatePropertyAll(Colors.white)),
       onPressed: _handleButtonClick,

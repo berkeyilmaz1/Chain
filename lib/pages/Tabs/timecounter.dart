@@ -3,6 +3,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:schallange/components/MyPointBox.dart';
+import 'package:schallange/components/myActivityBox.dart';
 import 'package:schallange/components/mySizedBox.dart';
 import 'package:schallange/constants/constants.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -22,14 +23,14 @@ class _TimeCounterPageState extends State<TimeCounterPage>
   Timer? timer;
   Duration timeElapsed = const Duration();
   final double borderWidth = 8.0;
-
-  var kazanc = 0;
+  int _storedValue = 0;
 
   @override
   void initState() {
     super.initState();
     _initPrefs();
     WidgetsBinding.instance.addObserver(this);
+    _loadStoredValue();
   }
 
   @override
@@ -78,6 +79,60 @@ class _TimeCounterPageState extends State<TimeCounterPage>
     _prefs.remove('selected_date');
   }
 
+  //total profit
+  void _loadStoredValue() async {
+    _prefs = await SharedPreferences.getInstance();
+    setState(() {
+      _storedValue = _prefs.getInt('stored_value') ?? 0;
+    });
+  }
+
+  void _saveValue(int value) async {
+    await _prefs.setInt('stored_value', value);
+  }
+
+  void _incrementValue() async {
+    int newValue = await _showInputDialog();
+    setState(() {
+      _storedValue += newValue;
+      _saveValue(_storedValue);
+    });
+  }
+
+  Future<int> _showInputDialog() async {
+    int enteredValue = 0;
+    await showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text("Günlük Harcanan Para"),
+          content: TextField(
+            keyboardType: TextInputType.number,
+            onChanged: (value) {
+              enteredValue = int.tryParse(value)!;
+            },
+          ),
+          actions: <Widget>[
+            ElevatedButton(
+              child: const Text("Tamam"),
+              onPressed: () {
+                Navigator.of(context).pop(enteredValue);
+              },
+            ),
+          ],
+        );
+      },
+    );
+    return enteredValue;
+  }
+
+  void _resetValue() {
+    setState(() {
+      _storedValue = 0;
+      _saveValue(_storedValue);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -85,76 +140,90 @@ class _TimeCounterPageState extends State<TimeCounterPage>
         automaticallyImplyLeading: false,
         title: const Text('İlerleyişim'),
       ),
-      body: Column(
-        children: <Widget>[
-          const MySizedBox(height: 20, widht: 0),
-          const Text("Bağımlılıktan Uzak Kalma Sürem ",
-              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
-          const MySizedBox(height: 20, widht: 0),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              SizedBox(
-                width: 200,
-                height: 200,
-                child: CustomPaint(
-                  painter: TimerPainter(
-                    timeElapsed: timeElapsed,
-                    backgroundColor: Colors.grey[300]!,
-                    color: ufo_green,
-                    borderWidth: borderWidth,
-                  ),
-                  child: Center(
-                    child: Text(
-                      '${timeElapsed.inHours}:${(timeElapsed.inMinutes % 60).toString().padLeft(2, '0')}:${(timeElapsed.inSeconds % 60).toString().padLeft(2, '0')}',
-                      style: const TextStyle(fontSize: 20.0),
+      body: SingleChildScrollView(
+        child: Column(
+          children: <Widget>[
+            const MySizedBox(height: 20, widht: 0),
+            const Text("Bağımlılıktan Uzak Kalma Sürem ",
+                style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
+            const MySizedBox(height: 20, widht: 0),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                SizedBox(
+                  width: 200,
+                  height: 200,
+                  child: CustomPaint(
+                    painter: TimerPainter(
+                      timeElapsed: timeElapsed,
+                      backgroundColor: Colors.grey[300]!,
+                      color: ufo_green,
+                      borderWidth: borderWidth,
+                    ),
+                    child: Center(
+                      child: Text(
+                        '${timeElapsed.inHours}:${(timeElapsed.inMinutes % 60).toString().padLeft(2, '0')}:${(timeElapsed.inSeconds % 60).toString().padLeft(2, '0')}',
+                        style: const TextStyle(fontSize: 20.0),
+                      ),
                     ),
                   ),
                 ),
+              ],
+            ),
+            const SizedBox(height: 20.0),
+            ElevatedButton(
+              style: kButtonStyle,
+              onPressed: () {
+                showDatePicker(
+                  context: context,
+                  initialDate: selectedDate,
+                  firstDate: DateTime(2000),
+                  lastDate: DateTime.now(),
+                ).then((value) {
+                  if (value != null) {
+                    setState(() {
+                      selectedDate = value;
+                      _saveData(); // Save when date changes
+                    });
+                  }
+                });
+              },
+              child: const Text(
+                'Başlama Tarihini Seçiniz',
+                style: kTextStyle,
               ),
-            ],
-          ),
-          const SizedBox(height: 20.0),
-          ElevatedButton(
-            style: kButtonStyle,
-            onPressed: () {
-              showDatePicker(
-                context: context,
-                initialDate: selectedDate,
-                firstDate: DateTime(2000),
-                lastDate: DateTime.now(),
-              ).then((value) {
-                if (value != null) {
-                  setState(() {
-                    selectedDate = value;
-                    _saveData(); // Save when date changes
-                  });
-                }
-              });
-            },
-            child: const Text(
-              'Başlama Tarihini Seçiniz',
-              style: kTextStyle,
             ),
-          ),
-          const SizedBox(height: 20.0),
-          ElevatedButton(
-            style: kButtonStyle,
-            onPressed: resetTimer,
-            child: const Text(
-              'Sayacı Sıfırla',
-              style: kTextStyle,
+            const SizedBox(height: 20.0),
+            ElevatedButton(
+              style: kButtonStyle,
+              onPressed: resetTimer,
+              child: const Text(
+                'Sayacı Sıfırla',
+                style: kTextStyle,
+              ),
             ),
-          ),
-          const Divider(),
-          const MyPointBox(boxTitle: "Toplam Puanınız", puan: 30),
-          const MyPointBox(boxTitle: "Toplam Kazancınız", puan: 30),
-        ],
+            const Divider(),
+            MyPointBox(boxTitle: "Toplam Puanınız", puan: point.toString()),
+            MyPointBox(
+                boxTitle: "Tasarruf Edilen Para",
+                puan: "$_storedValue ₺".toString()),
+                Padding(
+                  padding: const EdgeInsets.only(right: 12,top: 12),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      ElevatedButton(onPressed: _incrementValue,style: kButtonStyle, child: const Text("Harcanan Para",style: TextStyle(color: Colors.white),),),
+                      const MySizedBox(height: 0, widht: 5),
+                      ElevatedButton(onPressed: _resetValue,style: kButtonStyle, child: const Text('Sıfırla !',style: TextStyle(color: Colors.white),),),
+                    ],
+                  ),
+                )
+          ],
+        ),
       ),
     );
   }
 }
-
 class TimerPainter extends CustomPainter {
   final Duration timeElapsed;
   final Color backgroundColor;

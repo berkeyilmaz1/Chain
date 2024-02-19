@@ -1,13 +1,10 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:schallange/components/dailyclick.dart';
-import 'package:schallange/components/newDailyclick.dart';
 import 'package:schallange/constants/constants.dart';
 import 'package:schallange/pages/Tabs/mainPage.dart';
 import 'package:schallange/pages/authPages/loginPages.dart';
 import 'package:schallange/pages/authPages/signUpPage.dart';
 import 'package:schallange/pages/authPages/welcomePages.dart';
-
 import 'firebase_options.dart';
 
 void main() async {
